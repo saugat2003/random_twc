@@ -144,7 +144,8 @@ if os.environ.get("USE_IN_MEMORY_CHANNEL_LAYER", "True").lower() in ("true", "1"
 
 # ---------- CORS ----------
 CORS_ALLOW_ALL_ORIGINS = DEBUG
-CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",") if not DEBUG else []
+_cors_origins = os.environ.get("CORS_ALLOWED_ORIGINS", "")
+CORS_ALLOWED_ORIGINS = [o for o in _cors_origins.split(",") if o] if not DEBUG else []
 
 # ---------- Internationalization ----------
 LANGUAGE_CODE = "en-us"
@@ -177,6 +178,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@antigravity.chat")
+EMAIL_TIMEOUT = 10  # seconds – prevent SMTP from hanging the worker
 
 # ---------- Antigravity Config ----------
 # Allowed email domain for college verification (empty = allow all for dev)

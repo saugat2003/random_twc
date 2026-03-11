@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Lobby — random_twc{% endblock %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z"/>
+                </svg>
+            </div>
+            <span style="font-family: 'Poiret One', cursive; font-weight: 700;">random_twc</span>
+        </a>
+        <div class="navbar-actions">
+            <span class="online-badge">
+                <span class="online-dot"></span>
+                <span id="online-count">--</span> online
+            </span>
+            <a href="{% url 'accounts:logout' %}" class="btn btn-secondary btn-sm">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="lobby-page">
+    <div class="chat-container">
+        <!-- Video Section (Preview Mode) -->
+        <div class="video-section">
+            <div class="video-grid dual">
+                <!-- Empty remote video placeholder -->
+                <div class="video-wrapper">
+                    <div class="video-placeholder" style="text-align: center; padding: 24px;">
+                        <h2 id="lobby-title" style="font-family: 'Poiret One', cursive; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">Ready to Chat?</h2>
+                        <p id="lobby-subtitle" style="color: var(--text-secondary); margin-bottom: 24px;">You'll be matched with a random student anonymously</p>
+
+                        <div>
+                            <button class="btn btn-secondary btn-lg" id="start-chat-text-btn" onclick="startSearching('text')" style="margin-right: 12px; margin-bottom: 12px;">
+                                Text Only
+                            </button>
+                            <button class="btn btn-primary btn-lg" id="start-chat-video-btn" onclick="startSearching('video')" style="margin-bottom: 12px;">
+                                Video Chat
+                            </button>
+                            <br>
+                            <button class="btn btn-ghost btn-lg" id="cancel-search-btn" style="display: none;" onclick="cancelSearch()">
+                                Cancel Search
+                            </button>
+                        </div>
+
+                        <div class="lobby-status" id="lobby-status" style="display: none; margin-top: 24px;">
+                            <div class="searching-spinner"></div>
+                            <span id="status-text">Looking for a match...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local video preview -->
+                <div class="video-wrapper">
+                    <video id="local-video-preview" autoplay playsinline muted></video>
+                    <div class="video-label">You</div>
+                </div>
+            </div>
+
+            <!-- Video Controls (Preview Mode) -->
+            <div class="video-controls">
+                <button class="control-btn active" id="toggle-camera-preview" onclick="toggleCameraPreview()" title="Toggle Camera">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                </button>
+                <button class="control-btn active" id="toggle-mic-preview" onclick="toggleMicPreview()" title="Toggle Microphone">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Sidebar (Preview Mode) -->
+        <div class="chat-sidebar">
+            <div class="chat-header">
+                <h3 style="font-family: var(--font-primary);">Live Chat</h3>
+                <div class="chat-partner-status">
+                    <span class="status-dot" style="background: var(--text-muted);"></span>
+                    <span style="color: var(--text-muted);">Waiting for partner...</span>
+                </div>
+            </div>
+
+            <!-- Empty Chat Area -->
+            <div class="chat-messages" style="justify-content: center; align-items: center; color: var(--text-tertiary);">
+                <span>No messages yet.</span>
+            </div>
+
+            <!-- Fake disabled chat input -->
+            <div class="chat-input-area" style="opacity: 0.5; pointer-events: none;">
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" placeholder="Message..." disabled />
+                    <button class="send-btn" disabled>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/lobby.js' %}"></script>
+{% endblock %}

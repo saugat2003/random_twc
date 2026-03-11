@@ -1,0 +1,35 @@
+# Python & Django
+*.pyc
+*__pycache__*
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv/
+
+# Database
+db.sqlite3
+db.sqlite3-journal
+
+# Logs
+*.log
+*.pot
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+
+# Static and media files
+staticfiles/
+media/

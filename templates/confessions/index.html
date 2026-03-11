@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Confession Board — random_twc{% endblock %}
+
+{% block content %}
+<nav class="navbar" style="border-bottom: 1px solid var(--border-subtle);">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z"/>
+                </svg>
+            </div>
+            <span style="font-family: 'Poiret One', cursive; font-weight: 700;">random_twc</span>
+        </a>
+        <div class="navbar-links">
+            <a href="{% url 'landing' %}">Home</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'chat:lobby' %}">Chat</a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}">Login</a>
+                <a href="{% url 'accounts:register' %}">Register</a>
+            {% endif %}
+        </div>
+        <div class="navbar-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:logout' %}" class="btn btn-secondary btn-sm">Logout</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="padding-top: 100px; padding-bottom: 80px; max-width: 800px;">
+    <div class="text-center" style="margin-bottom: 48px;">
+        <h1 style="font-family: 'Poiret One', cursive; font-size: 3rem; margin-bottom: 16px;">Anonymous Confessions</h1>
+        <p style="color: var(--text-secondary); font-size: 1.1rem;">A safe space to confess your feelings, share a secret, or get something off your chest without revealing who you are.</p>
+    </div>
+
+    <div class="clean-card" style="padding: 32px; margin-bottom: 48px; background: var(--bg-secondary);">
+        <form method="POST" action="{% url 'confessions:list' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea 
+                    name="content" 
+                    class="form-input" 
+                    placeholder="Type your confession here... (Max 1000 characters)" 
+                    rows="4" 
+                    maxlength="1000"
+                    style="resize: vertical; font-size: 1rem; padding: 20px;"
+                    required
+                ></textarea>
+            </div>
+            <div style="text-align: right;">
+                <button type="submit" class="btn btn-primary btn-lg">Post Confession</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="confessions-list" style="display: flex; flex-direction: column; gap: 24px;">
+        {% if confessions %}
+            {% for confession in confessions %}
+                <div class="clean-card" style="padding: 24px; position: relative;">
+                    <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 16px; white-space: pre-wrap;">{{ confession.content }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+                        <span style="font-size: 0.85rem; color: var(--text-tertiary);">Confession #{{ confession.id|stringformat:"s"|slice:":8" }}</span>
+                        <span style="font-size: 0.85rem; color: var(--text-tertiary);">{{ confession.created_at|timesince }} ago</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center" style="padding: 48px; color: var(--text-tertiary);">
+                <p>No confessions yet. Be the first to share something!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}random_twc — Clean Random Chat{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="/" class="navbar-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z"/>
+                </svg>
+            </div>
+            <span style="font-family: 'Poiret One', cursive; font-weight: 700; font-size: 1.5rem;">random_twc</span>
+        </a>
+        <div class="navbar-actions">
+            <a href="{% url 'confessions:list' %}" class="btn btn-ghost btn-sm" style="margin-right: 8px;">Confessions</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'chat:lobby' %}" class="btn btn-primary btn-sm">Start Chatting</a>
+                <a href="{% url 'accounts:logout' %}" class="btn btn-ghost btn-sm">Logout</a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="btn btn-ghost btn-sm">Sign In</a>
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm">Get Started</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="landing-hero">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            Spontaneous & Anonymous<br>
+            Campus Conversations
+        </h1>
+        <p class="hero-subtitle">
+            Connect freely with random students without the weight of a profile. Clean, fast, and completely anonymous interactions designed for the modern campus.
+        </p>
+        <div class="hero-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'chat:lobby' %}" class="btn btn-primary btn-lg">
+                    Start Chatting
+                </a>
+            {% else %}
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
+                    Get Started — It's Free
+                </a>
+                <a href="{% url 'accounts:login' %}" class="btn btn-secondary btn-lg">
+                    Sign In — Existing User
+                </a>
+            {% endif %}
+        </div>
+        
+        <div style="margin-top: 48px; padding-top: 48px; border-top: 1px solid var(--border-subtle);">
+            <h2 style="font-family: 'Poiret One', cursive; margin-bottom: 12px; font-weight: 700;">Anonymous Confessions</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto;">Not ready to chat, but need to get something off your chest? Visit our completely open, anonymous campus confession wall.</p>
+            <a href="{% url 'confessions:list' %}" class="btn btn-secondary btn-lg" style="border-radius: var(--radius-xl);">
+                Visit Confession Board
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer style="text-align: center; padding: 40px 24px; color: var(--text-tertiary); font-size: 0.85rem; border-top: 1px solid var(--border-subtle); background: var(--bg-primary);">
+    <p>© 2026 random_twc. Minimalist Campus Connections.</p>
+</footer>
+{% endblock %}
